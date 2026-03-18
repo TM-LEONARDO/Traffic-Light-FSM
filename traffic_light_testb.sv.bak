@@ -1,0 +1,48 @@
+module Traffic_tb;
+
+    logic clk_100MHz;
+    logic TAORB;
+    logic reset;
+    logic [5:0] led;
+    
+    // Clock generation (100MHz -> period 10ns)
+    initial begin
+        clk_100MHz = 0;
+        forever #5000 clk_100MHz = ~clk_100MHz;
+    end
+    
+    // Instantiate DUT
+    Traffic_top dut (
+        .clk_100MHz(clk_100MHz),
+        .TAORB(TAORB),
+        .reset(reset),
+        .led(led)
+    );
+   
+    // Test stimulus
+    initial begin
+        TAORB = 0;
+        reset = 0;
+	#10000;
+	
+        reset = 1;
+	#10000;
+	reset = 0;
+	
+	#700_000_000;
+        TAORB = 0;
+        
+        
+	#700_000_000;  
+        
+        TAORB = 1;
+        
+	#500_000_000;
+        
+       
+        
+        $finish;
+    end
+
+endmodule
+
